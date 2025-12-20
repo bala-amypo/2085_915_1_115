@@ -23,27 +23,14 @@ public class ShipmentRecordController {
         return shipmentService.createShipment(shipment);
     }
 
-    @GetMapping("/{id}")
-    public ShipmentRecord getShipmentById(
-            @PathVariable Long id) {
-        return shipmentService.getShipmentById(id);
+    @GetMapping("/code/{shipmentCode}")
+    public ShipmentRecord getShipmentByCode(
+            @PathVariable String shipmentCode) {
+        return shipmentService.getShipmentByCode(shipmentCode);
     }
 
     @GetMapping
     public List<ShipmentRecord> getAllShipments() {
         return shipmentService.getAllShipments();
-    }
-
-    @PutMapping("/{id}")
-    public ShipmentRecord updateShipment(
-            @PathVariable Long id,
-            @RequestBody ShipmentRecord shipment) {
-        return shipmentService.updateShipment(id, shipment);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteShipment(
-            @PathVariable Long id) {
-        shipmentService.deleteShipment(id);
     }
 }

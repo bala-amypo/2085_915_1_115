@@ -18,18 +18,15 @@ public class TemperatureLogController {
         this.temperatureLogService = temperatureLogService;
     }
 
-    @PostMapping("/shipment/{shipmentId}")
-    public TemperatureSensorLog addTemperatureLog(
-            @PathVariable Long shipmentId,
+    @PostMapping
+    public TemperatureSensorLog recordLog(
             @RequestBody TemperatureSensorLog log) {
-
-        return temperatureLogService.addLog(shipmentId, log);
+        return temperatureLogService.recordLog(log);
     }
 
     @GetMapping("/shipment/{shipmentId}")
     public List<TemperatureSensorLog> getLogsByShipment(
             @PathVariable Long shipmentId) {
-
         return temperatureLogService.getLogsByShipment(shipmentId);
     }
 }

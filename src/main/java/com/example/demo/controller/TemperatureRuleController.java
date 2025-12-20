@@ -25,19 +25,7 @@ public class TemperatureRuleController {
     }
 
     @GetMapping
-    public List<TemperatureRule> getAllRules() {
-        return ruleService.getAllRules();
-    }
-
-    @GetMapping("/{id}")
-    public TemperatureRule getRuleById(
-            @PathVariable Long id) {
-        return ruleService.getRuleById(id);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteRule(
-            @PathVariable Long id) {
-        ruleService.deleteRule(id);
+    public List<TemperatureRule> getActiveRules() {
+        return ruleService.getActiveRules();
     }
 }

@@ -1,9 +1,10 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import com.example.demo.entity.AlertRecord;
-import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AlertRecordRepository;
 import com.example.demo.service.AlertService;
 
@@ -22,9 +23,7 @@ public class AlertServiceImpl implements AlertService {
     }
 
     @Override
-    public AlertRecord getAlertById(Long id) {
-        return alertRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Alert not found"));
+    public List<AlertRecord> getAlertsByShipment(Long shipmentId) {
+        return alertRepository.findByShipment_Id(shipmentId);
     }
 }
