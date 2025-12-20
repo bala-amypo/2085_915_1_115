@@ -15,13 +15,14 @@ public interface TemperatureRuleRepository
 
     List<TemperatureRule> findByActiveTrue();
 
-    @Query("""
-        SELECT r FROM TemperatureRule r
-        WHERE r.productType = :productType
-          AND r.active = true
-          AND :date BETWEEN r.effectiveFrom AND r.effectiveTo
-    ""`)
+    @Query(
+        "SELECT r FROM TemperatureRule r " +
+        "WHERE r.productType = :productType " +
+        "AND r.active = true " +
+        "AND :date BETWEEN r.effectiveFrom AND r.effectiveTo"
+    )
     Optional<TemperatureRule> findApplicableRule(
             @Param("productType") String productType,
-            @Param("date") LocalDate date);
+            @Param("date") LocalDate date
+    );
 }
