@@ -11,30 +11,19 @@ public class AlertRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link to ShipmentRecord
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "shipment_id", nullable = false)
-    private ShipmentRecord shipment;
+    private boolean acknowledged;
+    private LocalDateTime sentAt;
 
-    @Column(name = "alert_type")
-    private String alertType;
+    @ManyToOne
+    @JoinColumn(name = "breach_id")
+    private BreachRecord breach;
 
-    @Column(name = "alert_time")
-    private LocalDateTime alertTime;
-
-    @Column(name = "message")
-    private String message;
-
-    public AlertRecord() {}
-
-    public AlertRecord(ShipmentRecord shipment, String alertType, LocalDateTime alertTime, String message) {
-        this.shipment = shipment;
-        this.alertType = alertType;
-        this.alertTime = alertTime;
-        this.message = message;
+    @PrePersist
+    public void prePersist() {
+        acknowledged = false;
+        sentAt = LocalDateTime.now();
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }
@@ -43,35 +32,38 @@ public class AlertRecord {
         this.id = id;
     }
 
-    public ShipmentRecord getShipment() {
-        return shipment;
+    public boolean isAcknowledged() {
+        return acknowledged;
     }
 
-    public void setShipment(ShipmentRecord shipment) {
-        this.shipment = shipment;
+    public void setAcknowledged(boolean acknowledged) {
+        this.acknowledged = acknowledged;
     }
 
-    public String getAlertType() {
-        return alertType;
+    public LocalDateTime getSentAt() {
+        return sentAt;
     }
 
-    public void setAlertType(String alertType) {
-        this.alertType = alertType;
+    public void setSentAt(LocalDateTime sentAt) {
+        this.sentAt = sentAt;
     }
 
-    public LocalDateTime getAlertTime() {
-        return alertTime;
+    public BreachRecord getBreach() {
+        return breach;
     }
 
-    public void setAlertTime(LocalDateTime alertTime) {
-        this.alertTime = alertTime;
+    public void setBreach(BreachRecord breach) {
+        this.breach = breach;
     }
 
-    public String getMessage() {
-        return message;
+    public AlertRecord(Long id, boolean acknowledged, LocalDateTime sentAt, BreachRecord breach) {
+        this.id = id;
+        this.acknowledged = acknowledged;
+        this.sentAt = sentAt;
+        this.breach = breach;
     }
 
-    public void setMessage(String message) {
-        this.message = message;
+    public AlertRecord() {
     }
+
 }
