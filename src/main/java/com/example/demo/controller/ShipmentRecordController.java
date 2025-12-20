@@ -1,11 +1,11 @@
 package com.example.demo.controller;
 
+import java.util.List;
+
 import org.springframework.web.bind.annotation.*;
+
 import com.example.demo.entity.ShipmentRecord;
 import com.example.demo.service.ShipmentRecordService;
-
-import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/shipments")
@@ -18,23 +18,32 @@ public class ShipmentRecordController {
     }
 
     @PostMapping
-    public ShipmentRecord createShipment(@RequestBody ShipmentRecord shipment) {
+    public ShipmentRecord createShipment(
+            @RequestBody ShipmentRecord shipment) {
         return shipmentService.createShipment(shipment);
     }
 
-    @PutMapping("/{id}/status")
-    public ShipmentRecord updateStatus(@PathVariable Long id,
-                                       @RequestParam String status) {
-        return shipmentService.updateShipmentStatus(id, status);
-    }
-
-    @GetMapping("/{code}")
-    public Optional<ShipmentRecord> getByShipmentCode(@PathVariable String code) {
-        return shipmentService.getShipmentByCode(code);
+    @GetMapping("/{id}")
+    public ShipmentRecord getShipmentById(
+            @PathVariable Long id) {
+        return shipmentService.getShipmentById(id);
     }
 
     @GetMapping
     public List<ShipmentRecord> getAllShipments() {
         return shipmentService.getAllShipments();
+    }
+
+    @PutMapping("/{id}")
+    public ShipmentRecord updateShipment(
+            @PathVariable Long id,
+            @RequestBody ShipmentRecord shipment) {
+        return shipmentService.updateShipment(id, shipment);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteShipment(
+            @PathVariable Long id) {
+        shipmentService.deleteShipment(id);
     }
 }
