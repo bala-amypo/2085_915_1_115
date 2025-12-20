@@ -19,10 +19,10 @@ public class BreachRecordController {
     }
 
     @GetMapping("/shipment/{shipmentId}")
-    public List<BreachRecord> getBreachesByShipmentId(
+    public List<BreachRecord> getBreachesByShipment(
             @PathVariable Long shipmentId) {
 
         return breachDetectionService
-                .getBreachesByShipmentId(shipmentId);
+                .getBreachesByShipment(shipmentId);
     }
 }
