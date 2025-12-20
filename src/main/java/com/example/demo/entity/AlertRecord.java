@@ -11,12 +11,11 @@ public class AlertRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    // Link to Shipment entity
+    // Link to ShipmentRecord
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "shipment_id", nullable = false)
-    private Shipment shipment;
+    private ShipmentRecord shipment;
 
-    // Example alert fields
     @Column(name = "alert_type")
     private String alertType;
 
@@ -26,10 +25,9 @@ public class AlertRecord {
     @Column(name = "message")
     private String message;
 
-    // Constructors
     public AlertRecord() {}
 
-    public AlertRecord(Shipment shipment, String alertType, LocalDateTime alertTime, String message) {
+    public AlertRecord(ShipmentRecord shipment, String alertType, LocalDateTime alertTime, String message) {
         this.shipment = shipment;
         this.alertType = alertType;
         this.alertTime = alertTime;
@@ -45,11 +43,11 @@ public class AlertRecord {
         this.id = id;
     }
 
-    public Shipment getShipment() {
+    public ShipmentRecord getShipment() {
         return shipment;
     }
 
-    public void setShipment(Shipment shipment) {
+    public void setShipment(ShipmentRecord shipment) {
         this.shipment = shipment;
     }
 
