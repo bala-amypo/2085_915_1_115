@@ -1,7 +1,8 @@
 package com.example.demo.entity;
 
-import jakarta.persistence.*;
 import java.time.LocalDateTime;
+
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "alert_records")
@@ -11,25 +12,65 @@ public class AlertRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private boolean acknowledged;
-    private LocalDateTime sentAt;
-
+    // Relationship with Shipment
     @ManyToOne
-    @JoinColumn(name = "breach_id")
-    private BreachRecord breach;
+    @JoinColumn(name = "shipment_id", nullable = false)
+    private ShipmentRecord shipment;
 
-    @PrePersist
-    public void prePersist() {
-        acknowledged = false;
-        sentAt = LocalDateTime.now();
+    @Column(nullable = false)
+    private String alertType;   // TEMPERATURE_BREACH, SENSOR_FAILURE, etc.
+
+    @Column(nullable = false)
+    private String message;
+
+    @Column(nullable = false)
+    private LocalDateTime alertTime;
+
+    @Column(nullable = false)
+    private boolean acknowledged = false;
+
+    /* ================== Constructors ================== */
+
+    public AlertRecord() {
+        this.alertTime = LocalDateTime.now();
     }
+
+    /* ================== Getters and Setters ================== */
 
     public Long getId() {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public ShipmentRecord getShipment() {
+        return shipment;
+    }
+
+    public void setShipment(ShipmentRecord shipment) {
+        this.shipment = shipment;
+    }
+
+    public String getAlertType() {
+        return alertType;
+    }
+
+    public void setAlertType(String alertType) {
+        this.alertType = alertType;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
+    }
+
+    public LocalDateTime getAlertTime() {
+        return alertTime;
+    }
+
+    public void setAlertTime(LocalDateTime alertTime) {
+        this.alertTime = alertTime;
     }
 
     public boolean isAcknowledged() {
@@ -39,31 +80,4 @@ public class AlertRecord {
     public void setAcknowledged(boolean acknowledged) {
         this.acknowledged = acknowledged;
     }
-
-    public LocalDateTime getSentAt() {
-        return sentAt;
-    }
-
-    public void setSentAt(LocalDateTime sentAt) {
-        this.sentAt = sentAt;
-    }
-
-    public BreachRecord getBreach() {
-        return breach;
-    }
-
-    public void setBreach(BreachRecord breach) {
-        this.breach = breach;
-    }
-
-    public AlertRecord(Long id, boolean acknowledged, LocalDateTime sentAt, BreachRecord breach) {
-        this.id = id;
-        this.acknowledged = acknowledged;
-        this.sentAt = sentAt;
-        this.breach = breach;
-    }
-
-    public AlertRecord() {
-    }
-
 }
