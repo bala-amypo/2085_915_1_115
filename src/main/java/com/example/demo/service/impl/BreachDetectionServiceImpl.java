@@ -1,44 +1,58 @@
 package com.example.demo.service.impl;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
-import com.example.demo.service.BreachDetectionService;
-import com.example.demo.repository.BreachRecordRepository;
-import com.example.demo.repository.ShipmentRecordRepository;
+
 import com.example.demo.entity.BreachRecord;
 import com.example.demo.entity.ShipmentRecord;
 import com.example.demo.exception.ResourceNotFoundException;
-
-import java.util.List;
+import com.example.demo.repository.BreachRecordRepository;
+import com.example.demo.repository.ShipmentRecordRepository;
+import com.example.demo.service.BreachDetectionService;
 
 @Service
-public class BreachDetectionServiceImpl implements BreachDetectionService {
+public class BreachDetectionServiceImpl
+        implements BreachDetectionService {
 
-    private final BreachRecordRepository breachRepo;
-    private final ShipmentRecordRepository shipmentRepo;
+    private final BreachRecordRepository breachRepository;
+    private final ShipmentRecordRepository shipmentRepository;
 
-    public BreachDetectionServiceImpl(BreachRecordRepository breachRepo, ShipmentRecordRepository shipmentRepo) {
-        this.breachRepo = breachRepo;
-        this.shipmentRepo = shipmentRepo;
+    public BreachDetectionServiceImpl(
+            BreachRecordRepository breachRepository,
+            ShipmentRecordRepository shipmentRepository) {
+        this.breachRepository = breachRepository;
+        this.shipmentRepository = shipmentRepository;
     }
 
+    @Override
     public BreachRecord logBreach(BreachRecord breach) {
-        return breachRepo.save(breach);
+        return breachRepository.save(breach);
     }
 
+    @Override
     public BreachRecord resolveBreach(Long id) {
-        BreachRecord breach = breachRepo.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Breach not found"));
+        BreachRecord breach = breachRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Breach not found"));
+
         breach.setResolved(true);
-        return breachRepo.save(breach);
+        return breachRepository.save(breach);
     }
 
+    @Override
     public List<BreachRecord> getBreachesByShipment(Long shipmentId) {
-        ShipmentRecord shipment = shipmentRepo.findById(shipmentId)
-                .orElseThrow(() -> new ResourceNotFoundException("Shipment not found"));
 
-        if (shipment.getBreaches().isEmpty()) {
-            throw new ResourceNotFoundException("No breaches found for shipment");
+        ShipmentRecord shipment = shipmentRepository.findById(shipmentId)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException("Shipment not found"));
+
+        if (shipment.getBreaches() == null ||
+            shipment.getBreaches().isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No breaches found for shipment");
         }
+
         return shipment.getBreaches();
     }
 }
