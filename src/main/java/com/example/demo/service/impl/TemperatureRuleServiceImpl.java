@@ -1,45 +1,38 @@
 package com.example.demo.service.impl;
 
-import java.util.List;
-
 import org.springframework.stereotype.Service;
-
-import com.example.demo.entity.TemperatureRule;
-import com.example.demo.exception.ResourceNotFoundException;
-import com.example.demo.repository.TemperatureRuleRepository;
 import com.example.demo.service.TemperatureRuleService;
+import com.example.demo.repository.TemperatureRuleRepository;
+import com.example.demo.entity.TemperatureRule;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Optional;
 
 @Service
-public class TemperatureRuleServiceImpl
-        implements TemperatureRuleService {
+public class TemperatureRuleServiceImpl implements TemperatureRuleService {
 
     private final TemperatureRuleRepository ruleRepository;
 
-    public TemperatureRuleServiceImpl(
-            TemperatureRuleRepository ruleRepository) {
+    public TemperatureRuleServiceImpl(TemperatureRuleRepository ruleRepository) {
         this.ruleRepository = ruleRepository;
     }
 
     @Override
     public TemperatureRule createRule(TemperatureRule rule) {
+        if (rule.getMinTemp() >= rule.getMaxTemp()) {
+            throw new IllegalArgumentException("minTemp must be less than maxTemp");
+        }
         return ruleRepository.save(rule);
     }
 
     @Override
-    public List<TemperatureRule> getAllRules() {
-        return ruleRepository.findAll();
+    public Optional<TemperatureRule> getRuleForProduct(String productType, LocalDate date) {
+        return ruleRepository.findApplicableRule(productType, date);
     }
 
     @Override
-    public TemperatureRule getRuleById(Long id) {
-        return ruleRepository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Rule not found"));
-    }
-
-    @Override
-    public void deleteRule(Long id) {
-        TemperatureRule rule = getRuleById(id);
-        ruleRepository.delete(rule);
+    public List<TemperatureRule> getActiveRules() {
+        return ruleRepository.findByActiveTrue();
     }
 }
