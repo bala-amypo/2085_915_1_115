@@ -19,9 +19,25 @@ public class BreachDetectionServiceImpl
             BreachRecordRepository breachRecordRepository) {
         this.breachRecordRepository = breachRecordRepository;
     }
-
     @Override
-    public List<BreachRecord> getBreachesByShipmentId(Long shipmentId) {
+    public BreachRecord logBreach(BreachRecord breach) {
+        return breachRecordRepository.save(breach);
+    }
+    @Override
+    public BreachRecord resolveBreach(Long id) {
+
+        BreachRecord breach = breachRecordRepository.findById(id)
+                .orElseThrow(() ->
+                        new ResourceNotFoundException(
+                                "Breach record not found with id: " + id
+                        )
+                );
+
+        breach.setResolved(true);
+        return breachRecordRepository.save(breach);
+    }
+    @Override
+    public List<BreachRecord> getBreachesByShipment(Long shipmentId) {
 
         List<BreachRecord> breaches =
                 breachRecordRepository.findByShipmentId(shipmentId);
