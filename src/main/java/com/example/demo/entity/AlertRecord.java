@@ -1,69 +1,69 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
 import java.time.LocalDateTime;
-
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.PrePersist;
-import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "alert_records")
 public class AlertRecord {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long shipmentId;
-    private Long breachId;
+
     private boolean acknowledged;
     private LocalDateTime sentAt;
+
+    @ManyToOne
+    @JoinColumn(name = "breach_id")
+    private BreachRecord breach;
+
+    @PrePersist
+    public void prePersist() {
+        acknowledged = false;
+        sentAt = LocalDateTime.now();
+    }
+
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
-    public Long getShipmentId() {
-        return shipmentId;
-    }
-    public void setShipmentId(Long shipmentId) {
-        this.shipmentId = shipmentId;
-    }
-    public Long getBreachId() {
-        return breachId;
-    }
-    public void setBreachId(Long breachId) {
-        this.breachId = breachId;
-    }
+
     public boolean isAcknowledged() {
         return acknowledged;
     }
+
     public void setAcknowledged(boolean acknowledged) {
         this.acknowledged = acknowledged;
     }
+
     public LocalDateTime getSentAt() {
         return sentAt;
     }
+
     public void setSentAt(LocalDateTime sentAt) {
         this.sentAt = sentAt;
     }
-    public AlertRecord() {
+
+    public BreachRecord getBreach() {
+        return breach;
     }
-    public AlertRecord(Long id, Long shipmentId, Long breachId, boolean acknowledged, LocalDateTime sentAt) {
+
+    public void setBreach(BreachRecord breach) {
+        this.breach = breach;
+    }
+
+    public AlertRecord(Long id, boolean acknowledged, LocalDateTime sentAt, BreachRecord breach) {
         this.id = id;
-        this.shipmentId = shipmentId;
-        this.breachId = breachId;
         this.acknowledged = acknowledged;
         this.sentAt = sentAt;
+        this.breach = breach;
     }
-    @PrePersist
-    public void prePersist(){
-        this.acknowledged=false;
-        if(this.sentAt==null){
-            this.sentAt=LocalDateTime.now();
-        }
-     }
-    
+
+    public AlertRecord() {
+    }
+
 }
