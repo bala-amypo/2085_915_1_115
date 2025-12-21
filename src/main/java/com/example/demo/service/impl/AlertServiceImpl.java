@@ -37,13 +37,13 @@ public class AlertServiceImpl implements AlertService {
 
     @Override
     public List<AlertRecord> getAllAlerts() {
-    List<AlertRecord> alerts = alertRepository.findAll();
+        List<AlertRecord> alerts = alertRepository.findAll();
 
-    if (alerts.isEmpty()) {
-        throw new ResourceNotFoundException("No alerts found");
+        if (alerts.isEmpty()) {
+            throw new ResourceNotFoundException("No alerts found");
+        }
+
+        return alerts;
     }
-
-    return alerts;
-}
 
 }
