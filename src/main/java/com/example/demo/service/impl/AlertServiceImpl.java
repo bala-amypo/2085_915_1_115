@@ -21,10 +21,15 @@ public class AlertServiceImpl implements AlertService {
     public AlertRecord triggerAlert(AlertRecord alert) {
         return alertRepository.save(alert);
     }
+    @Override
+    public AlertRecord getAlertById(Long id) {
+        return alertRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Alert not found with ID: " + id));
+    }
 
-        @Override
+    @Override
     public AlertRecord acknowledgeAlert(Long id) {
-        AlertRecord alert = getAlertById(id); // exception handled here
+        AlertRecord alert = getAlertById(id); 
         alert.setAcknowledged(true);
         return alertRepository.save(alert);
     }
