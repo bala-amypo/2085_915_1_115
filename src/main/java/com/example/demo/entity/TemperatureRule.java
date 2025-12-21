@@ -64,7 +64,7 @@ public class TemperatureRule {
         this.maxTemp = maxTemp;
     }
 
-    public boolean isActive() {
+    public boolean getActive() {
         return active;
     }
 
