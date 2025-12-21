@@ -21,6 +21,7 @@ public class AlertServiceImpl implements AlertService {
     public AlertRecord triggerAlert(AlertRecord alert) {
         return alertRepository.save(alert);
     }
+
     @Override
     public AlertRecord getAlertById(Long id) {
         return alertRepository.findById(id)
@@ -34,21 +35,23 @@ public class AlertServiceImpl implements AlertService {
         return alertRepository.save(alert);
     }
 
-
     @Override
     public List<AlertRecord> getAlertsByShipment(Long shipmentId) {
-        return alertRepository.findByShipmentId(shipmentId);
+        List<AlertRecord> alerts = alertRepository.findByShipmentId(shipmentId);
+        if (alerts.isEmpty()) {
+            throw new ResourceNotFoundException(
+                    "No alerts found for shipment ID: " + shipmentId
+            );
+        }
+        return alerts;
     }
 
     @Override
     public List<AlertRecord> getAllAlerts() {
         List<AlertRecord> alerts = alertRepository.findAll();
-
         if (alerts.isEmpty()) {
             throw new ResourceNotFoundException("No alerts found");
         }
-
         return alerts;
     }
-
 }
