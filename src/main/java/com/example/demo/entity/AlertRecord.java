@@ -11,30 +11,34 @@ public class AlertRecord {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Column(nullable = false)
     private Long shipmentId;
 
+    @Column(nullable = false)
     private Long breachId;
 
-    private boolean acknowledged;
+    @Column(nullable = false)
+    private String alertType;
+
+    @Column(nullable = false)
+    private String message;
 
     private LocalDateTime sentAt;
+
+    private Boolean acknowledged;
 
     public AlertRecord() {
     }
 
-    public AlertRecord(Long shipmentId, Long breachId,
-                       boolean acknowledged, LocalDateTime sentAt) {
-        this.shipmentId = shipmentId;
-        this.breachId = breachId;
-        this.acknowledged = acknowledged;
-        this.sentAt = sentAt;
+    @PrePersist
+    public void onCreate() {
+        this.sentAt = LocalDateTime.now();
+        if (this.acknowledged == null) {
+            this.acknowledged = false;
+        }
     }
 
-    @PrePersist
-    public void prePersist() {
-        this.acknowledged = false;
-        this.sentAt = LocalDateTime.now();
-    }
+    // Getters and Setters
 
     public Long getId() {
         return id;
@@ -56,15 +60,43 @@ public class AlertRecord {
         this.breachId = breachId;
     }
 
-    public boolean isAcknowledged() {
-        return acknowledged;
+    public String getAlertType() {
+        return alertType;
     }
 
-    public void setAcknowledged(boolean acknowledged) {
-        this.acknowledged = acknowledged;
+    public void setAlertType(String alertType) {
+        this.alertType = alertType;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public LocalDateTime getSentAt() {
         return sentAt;
     }
+
+    public Boolean getAcknowledged() {
+        return acknowledged;
+    }
+
+    public void setAcknowledged(Boolean acknowledged) {
+        this.acknowledged = acknowledged;
+    }
+
+    public AlertRecord(Long id, Long shipmentId, Long breachId, String alertType, String message, LocalDateTime sentAt,
+            Boolean acknowledged) {
+        this.id = id;
+        this.shipmentId = shipmentId;
+        this.breachId = breachId;
+        this.alertType = alertType;
+        this.message = message;
+        this.sentAt = sentAt;
+        this.acknowledged = acknowledged;
+    }
+    
 }
