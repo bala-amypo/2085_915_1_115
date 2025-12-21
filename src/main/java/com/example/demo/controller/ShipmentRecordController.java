@@ -2,39 +2,45 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.ShipmentRecord;
 import com.example.demo.service.ShipmentRecordService;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
-@RequestMapping("/shipments")
+@RequestMapping("/api/shipments")
+@Tag(name = "Shipments")
 public class ShipmentRecordController {
 
-    private final ShipmentRecordService shipmentRecordService;
+    private final ShipmentRecordService shipmentService;
 
-    public ShipmentRecordController(ShipmentRecordService shipmentRecordService) {
-        this.shipmentRecordService = shipmentRecordService;
+    public ShipmentRecordController(ShipmentRecordService shipmentService) {
+        this.shipmentService = shipmentService;
     }
 
     @PostMapping
     public ShipmentRecord createShipment(@RequestBody ShipmentRecord shipment) {
-        return shipmentRecordService.createShipment(shipment);
+        return shipmentService.createShipment(shipment);
     }
 
     @PutMapping("/{id}/status")
-    public ShipmentRecord updateShipmentStatus(@PathVariable Long id,
-                                               @RequestParam String status) {
-        return shipmentRecordService.updateShipmentStatus(id, status);
+    public ShipmentRecord updateStatus(@PathVariable Long id,
+                                       @RequestParam String status) {
+        return shipmentService.updateShipmentStatus(id, status);
     }
 
-    @GetMapping("/{code}")
-    public Optional<ShipmentRecord> getShipmentByCode(@PathVariable String code) {
-        return shipmentRecordService.getShipmentByCode(code);
+    @GetMapping("/code/{shipmentCode}")
+    public ShipmentRecord getByCode(@PathVariable String shipmentCode) {
+        return shipmentService.getShipmentByCode(shipmentCode);
+    }
+
+    @GetMapping("/{id}")
+    public ShipmentRecord getById(@PathVariable Long id) {
+        return shipmentService.getShipmentById(id);
     }
 
     @GetMapping
-    public List<ShipmentRecord> getAllShipments() {
-        return shipmentRecordService.getAllShipments();
+    public List<ShipmentRecord> getAll() {
+        return shipmentService.getAllShipments();
     }
 }
