@@ -17,16 +17,21 @@ public class ShipmentRecord {
 
     private String destination;
 
+    @Column(nullable = false)
+    private String productType;
+
     private String status;
 
     public ShipmentRecord() {
     }
 
-    public ShipmentRecord(String shipmentCode, String origin, String destination, String status) {
+    public ShipmentRecord(String shipmentCode, String origin, String destination,String productType, String status) {
         this.shipmentCode = shipmentCode;
         this.origin = origin;
         this.destination = destination;
         this.status = status;
+        this.productType=productType;
+
     }
 
     @PrePersist
