@@ -22,13 +22,13 @@ public class AlertServiceImpl implements AlertService {
         return alertRepository.save(alert);
     }
 
-    @Override
+        @Override
     public AlertRecord acknowledgeAlert(Long id) {
-        AlertRecord alert = alertRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
+        AlertRecord alert = getAlertById(id); // exception handled here
         alert.setAcknowledged(true);
         return alertRepository.save(alert);
     }
+
 
     @Override
     public List<AlertRecord> getAlertsByShipment(Long shipmentId) {
