@@ -80,4 +80,11 @@ public class ShipmentRecord {
     public void setStatus(String status) {
         this.status = status;
     }
+    public String getProductType() {
+        return productType;
+    }
+
+    public void setProductType(String productType) {
+        this.productType = productType;
+    }
 }
