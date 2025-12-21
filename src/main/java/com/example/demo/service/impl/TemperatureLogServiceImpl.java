@@ -33,8 +33,13 @@ public class TemperatureLogServiceImpl implements TemperatureLogService {
                 .orElseThrow(() -> new ResourceNotFoundException("Temperature log not found"));
     }
 
-    @Override
+   @Override
     public List<TemperatureSensorLog> getAllLogs() {
-        return logRepository.findAll();
+        List<TemperatureSensorLog> logs = logRepository.findAll();
+        if (logs.isEmpty()) {
+            throw new ResourceNotFoundException("No temperature logs found");
+        }
+        return logs;
     }
+
 }
