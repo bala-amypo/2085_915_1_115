@@ -8,5 +8,9 @@ public interface AlertService {
 
     AlertRecord triggerAlert(AlertRecord alert);
 
+    AlertRecord acknowledgeAlert(Long id);
+
     List<AlertRecord> getAlertsByShipment(Long shipmentId);
+
+    List<AlertRecord> getAllAlerts();
 }

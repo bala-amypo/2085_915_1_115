@@ -7,37 +7,42 @@ import com.example.demo.service.ShipmentRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ShipmentRecordServiceImpl implements ShipmentRecordService {
 
-    private final ShipmentRecordRepository shipmentRecordRepository;
+    private final ShipmentRecordRepository shipmentRepository;
 
-    public ShipmentRecordServiceImpl(ShipmentRecordRepository shipmentRecordRepository) {
-        this.shipmentRecordRepository = shipmentRecordRepository;
+    public ShipmentRecordServiceImpl(ShipmentRecordRepository shipmentRepository) {
+        this.shipmentRepository = shipmentRepository;
     }
 
     @Override
     public ShipmentRecord createShipment(ShipmentRecord shipment) {
-        return shipmentRecordRepository.save(shipment);
+        return shipmentRepository.save(shipment);
     }
 
     @Override
-    public ShipmentRecord updateShipmentStatus(Long id, String newStatus) {
-        ShipmentRecord shipment = shipmentRecordRepository.findById(id)
+    public ShipmentRecord updateShipmentStatus(Long id, String status) {
+        ShipmentRecord shipment = getShipmentById(id);
+        shipment.setStatus(status);
+        return shipmentRepository.save(shipment);
+    }
+
+    @Override
+    public ShipmentRecord getShipmentByCode(String code) {
+        return shipmentRepository.findByShipmentCode(code)
                 .orElseThrow(() -> new ResourceNotFoundException("Shipment not found"));
-        shipment.setStatus(newStatus);
-        return shipmentRecordRepository.save(shipment);
     }
 
     @Override
-    public Optional<ShipmentRecord> getShipmentByCode(String shipmentCode) {
-        return shipmentRecordRepository.findByShipmentCode(shipmentCode);
+    public ShipmentRecord getShipmentById(Long id) {
+        return shipmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Shipment not found"));
     }
 
     @Override
     public List<ShipmentRecord> getAllShipments() {
-        return shipmentRecordRepository.findAll();
+        return shipmentRepository.findAll();
     }
 }

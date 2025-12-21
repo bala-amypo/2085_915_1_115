@@ -1,41 +1,67 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.TemperatureRule;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.TemperatureRuleRepository;
 import com.example.demo.service.TemperatureRuleService;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class TemperatureRuleServiceImpl implements TemperatureRuleService {
 
-    private final TemperatureRuleRepository temperatureRuleRepository;
+    private final TemperatureRuleRepository ruleRepository;
 
-    public TemperatureRuleServiceImpl(TemperatureRuleRepository temperatureRuleRepository) {
-        this.temperatureRuleRepository = temperatureRuleRepository;
+    public TemperatureRuleServiceImpl(TemperatureRuleRepository ruleRepository) {
+        this.ruleRepository = ruleRepository;
     }
 
     @Override
     public TemperatureRule createRule(TemperatureRule rule) {
-        if (rule.getMinTemp() >= rule.getMaxTemp()) {
-            throw new IllegalArgumentException("minTemp must be less than maxTemp");
-        }
-        if (rule.getEffectiveTo().isBefore(rule.getEffectiveFrom())) {
-            throw new IllegalArgumentException("effectiveTo must be after effectiveFrom");
-        }
-        return temperatureRuleRepository.save(rule);
+        validateRule(rule);
+        return ruleRepository.save(rule);
     }
 
     @Override
-    public Optional<TemperatureRule> getRuleForProduct(String productType, LocalDate date) {
-        return temperatureRuleRepository.findApplicableRule(productType, date);
+    public TemperatureRule updateRule(Long id, TemperatureRule rule) {
+        TemperatureRule existing = getRuleById(id);
+        validateRule(rule);
+
+        existing.setMinTemp(rule.getMinTemp());
+        existing.setMaxTemp(rule.getMaxTemp());
+        existing.setEffectiveFrom(rule.getEffectiveFrom());
+        existing.setEffectiveTo(rule.getEffectiveTo());
+        existing.setActive(rule.getActive());
+
+        return ruleRepository.save(existing);
     }
 
     @Override
     public List<TemperatureRule> getActiveRules() {
-        return temperatureRuleRepository.findByActiveTrue();
+        return ruleRepository.findByActiveTrue();
+    }
+
+    @Override
+    public TemperatureRule getRuleForProduct(String productType, LocalDate date) {
+        return ruleRepository.findApplicableRule(productType, date)
+                .orElseThrow(() -> new ResourceNotFoundException("Temperature rule not found"));
+    }
+
+    @Override
+    public List<TemperatureRule> getAllRules() {
+        return ruleRepository.findAll();
+    }
+
+    private void validateRule(TemperatureRule rule) {
+        if (rule.getMinTemp() >= rule.getMaxTemp()) {
+            throw new IllegalArgumentException("Min temperature must be less than max temperature");
+        }
+    }
+
+    private TemperatureRule getRuleById(Long id) {
+        return ruleRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Temperature rule not found"));
     }
 }
