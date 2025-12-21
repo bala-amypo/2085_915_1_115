@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.AlertRecord;
 import com.example.demo.service.AlertService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 

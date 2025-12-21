@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.TemperatureSensorLog;
 import com.example.demo.service.TemperatureLogService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -17,7 +17,7 @@ public class TemperatureLogController {
     }
 
     @PostMapping
-    public TemperatureSensorLog recordTemperature(@RequestBody TemperatureSensorLog log) {
+    public TemperatureSensorLog recordLog(@RequestBody TemperatureSensorLog log) {
         return temperatureLogService.recordLog(log);
     }
 

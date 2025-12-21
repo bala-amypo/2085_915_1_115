@@ -1,8 +1,8 @@
 package com.example.demo.controller;
 
-import org.springframework.web.bind.annotation.*;
 import com.example.demo.entity.BreachRecord;
 import com.example.demo.service.BreachDetectionService;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -10,24 +10,24 @@ import java.util.List;
 @RequestMapping("/breaches")
 public class BreachRecordController {
 
-    private final BreachDetectionService service;
+    private final BreachDetectionService breachDetectionService;
 
-    public BreachRecordController(BreachDetectionService service) {
-        this.service = service;
+    public BreachRecordController(BreachDetectionService breachDetectionService) {
+        this.breachDetectionService = breachDetectionService;
     }
 
     @PostMapping
-    public BreachRecord create(@RequestBody BreachRecord breach) {
-        return service.logBreach(breach);
+    public BreachRecord logBreach(@RequestBody BreachRecord breach) {
+        return breachDetectionService.logBreach(breach);
     }
 
     @PutMapping("/{id}/resolve")
-    public BreachRecord resolve(@PathVariable Long id) {
-        return service.resolveBreach(id);
+    public BreachRecord resolveBreach(@PathVariable Long id) {
+        return breachDetectionService.resolveBreach(id);
     }
 
     @GetMapping("/shipment/{shipmentId}")
-    public List<BreachRecord> getByShipment(@PathVariable Long shipmentId) {
-        return service.getBreachesByShipment(shipmentId);
+    public List<BreachRecord> getBreachesByShipment(@PathVariable Long shipmentId) {
+        return breachDetectionService.getBreachesByShipment(shipmentId);
     }
 }
