@@ -1,6 +1,7 @@
 package com.example.demo.service.impl;
 
 import com.example.demo.entity.AlertRecord;
+import com.example.demo.exception.ResourceNotFoundException;
 import com.example.demo.repository.AlertRecordRepository;
 import com.example.demo.service.AlertService;
 import org.springframework.stereotype.Service;
@@ -10,19 +11,32 @@ import java.util.List;
 @Service
 public class AlertServiceImpl implements AlertService {
 
-    private final AlertRecordRepository alertRecordRepository;
+    private final AlertRecordRepository alertRepository;
 
-    public AlertServiceImpl(AlertRecordRepository alertRecordRepository) {
-        this.alertRecordRepository = alertRecordRepository;
+    public AlertServiceImpl(AlertRecordRepository alertRepository) {
+        this.alertRepository = alertRepository;
     }
 
     @Override
     public AlertRecord triggerAlert(AlertRecord alert) {
-        return alertRecordRepository.save(alert);
+        return alertRepository.save(alert);
+    }
+
+    @Override
+    public AlertRecord acknowledgeAlert(Long id) {
+        AlertRecord alert = alertRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
+        alert.setAcknowledged(true);
+        return alertRepository.save(alert);
     }
 
     @Override
     public List<AlertRecord> getAlertsByShipment(Long shipmentId) {
-        return alertRecordRepository.findByShipmentId(shipmentId);
+        return alertRepository.findByShipmentId(shipmentId);
+    }
+
+    @Override
+    public List<AlertRecord> getAllAlerts() {
+        return alertRepository.findAll();
     }
 }
