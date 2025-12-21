@@ -1,9 +1,9 @@
 package com.example.demo.service.impl;
 
-import org.springframework.stereotype.Service;
-import com.example.demo.service.TemperatureRuleService;
-import com.example.demo.repository.TemperatureRuleRepository;
 import com.example.demo.entity.TemperatureRule;
+import com.example.demo.repository.TemperatureRuleRepository;
+import com.example.demo.service.TemperatureRuleService;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -12,10 +12,10 @@ import java.util.Optional;
 @Service
 public class TemperatureRuleServiceImpl implements TemperatureRuleService {
 
-    private final TemperatureRuleRepository ruleRepository;
+    private final TemperatureRuleRepository temperatureRuleRepository;
 
-    public TemperatureRuleServiceImpl(TemperatureRuleRepository ruleRepository) {
-        this.ruleRepository = ruleRepository;
+    public TemperatureRuleServiceImpl(TemperatureRuleRepository temperatureRuleRepository) {
+        this.temperatureRuleRepository = temperatureRuleRepository;
     }
 
     @Override
@@ -23,16 +23,19 @@ public class TemperatureRuleServiceImpl implements TemperatureRuleService {
         if (rule.getMinTemp() >= rule.getMaxTemp()) {
             throw new IllegalArgumentException("minTemp must be less than maxTemp");
         }
-        return ruleRepository.save(rule);
+        if (rule.getEffectiveTo().isBefore(rule.getEffectiveFrom())) {
+            throw new IllegalArgumentException("effectiveTo must be after effectiveFrom");
+        }
+        return temperatureRuleRepository.save(rule);
     }
 
     @Override
     public Optional<TemperatureRule> getRuleForProduct(String productType, LocalDate date) {
-        return ruleRepository.findApplicableRule(productType, date);
+        return temperatureRuleRepository.findApplicableRule(productType, date);
     }
 
     @Override
     public List<TemperatureRule> getActiveRules() {
-        return ruleRepository.findByActiveTrue();
+        return temperatureRuleRepository.findByActiveTrue();
     }
 }
