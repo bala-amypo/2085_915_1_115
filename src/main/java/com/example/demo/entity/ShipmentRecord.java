@@ -1,16 +1,20 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "shipment_records")
+@Table(
+    name = "shipment_records",
+    uniqueConstraints = @UniqueConstraint(columnNames = "shipmentCode")
+)
 public class ShipmentRecord {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true)
+    @Column(nullable = false)
     private String shipmentCode;
 
     private String origin;
@@ -20,29 +24,33 @@ public class ShipmentRecord {
     @Column(nullable = false)
     private String productType;
 
+    private LocalDateTime startDate;
+
+    private LocalDateTime expectedDelivery;
+
     private String status;
+
+    private LocalDateTime createdAt;
 
     public ShipmentRecord() {
     }
 
-    public ShipmentRecord(String shipmentCode, String origin, String destination,String productType, String status) {
-        this.shipmentCode = shipmentCode;
-        this.origin = origin;
-        this.destination = destination;
-        this.status = status;
-        this.productType=productType;
-
-    }
-
     @PrePersist
-    public void prePersist() {
+    public void onCreate() {
+        this.createdAt = LocalDateTime.now();
         if (this.status == null) {
             this.status = "IN_TRANSIT";
         }
     }
 
+   
+
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getShipmentCode() {
@@ -51,10 +59,6 @@ public class ShipmentRecord {
 
     public void setShipmentCode(String shipmentCode) {
         this.shipmentCode = shipmentCode;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
     }
 
     public String getOrigin() {
@@ -73,13 +77,6 @@ public class ShipmentRecord {
         this.destination = destination;
     }
 
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
     public String getProductType() {
         return productType;
     }
@@ -87,4 +84,45 @@ public class ShipmentRecord {
     public void setProductType(String productType) {
         this.productType = productType;
     }
+
+    public LocalDateTime getStartDate() {
+        return startDate;
+    }
+
+    public void setStartDate(LocalDateTime startDate) {
+        this.startDate = startDate;
+    }
+
+    public LocalDateTime getExpectedDelivery() {
+        return expectedDelivery;
+    }
+
+    public void setExpectedDelivery(LocalDateTime expectedDelivery) {
+        this.expectedDelivery = expectedDelivery;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public ShipmentRecord(Long id, String shipmentCode, String origin, String destination, String productType,LocalDateTime startDate, LocalDateTime expectedDelivery, String status, LocalDateTime createdAt) {
+        this.id = id;
+        this.shipmentCode = shipmentCode;
+        this.origin = origin;
+        this.destination = destination;
+        this.productType = productType;
+        this.startDate = startDate;
+        this.expectedDelivery = expectedDelivery;
+        this.status = status;
+        this.createdAt = createdAt;
+    }
+    
 }
