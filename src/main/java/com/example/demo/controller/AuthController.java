@@ -3,6 +3,7 @@ package com.example.demo.controller;
 import com.example.demo.entity.User;
 import com.example.demo.service.UserService;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -17,12 +18,12 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public User register(@RequestBody User user) {
+    public User register(@Valid @RequestBody User user) {
         return userService.registerUser(user);
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody User request) {
+    public String login(@Valid @RequestBody User request) {
         User user = userService.findByEmail(request.getEmail());
 
         if (user != null && user.getPassword().equals(request.getPassword())) {
