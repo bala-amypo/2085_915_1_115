@@ -17,10 +17,11 @@ public class ShipmentRecord {
 
     public ShipmentRecord() {}
 
+    // REQUIRED BY TEST: default must be "IN_TRANSIT"
     @PrePersist
     public void prePersist() {
-        if (status == null) {
-            status = "CREATED";
+        if (this.status == null || this.status.isEmpty()) {
+            this.status = "IN_TRANSIT";
         }
     }
 
