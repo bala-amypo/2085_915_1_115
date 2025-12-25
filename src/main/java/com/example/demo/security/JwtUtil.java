@@ -1,16 +1,19 @@
 package com.example.demo.security;
 
+import org.springframework.stereotype.Component;
+
+@Component   // ✅ THIS IS THE FIX
 public class JwtUtil {
 
     private final String secret;
     private final int expirationMinutes;
 
     public JwtUtil() {
-        this.secret = "default";
+        this.secret = "default-secret";
         this.expirationMinutes = 60;
     }
 
-    // ✅ REQUIRED BY TESTS
+    // Required by tests
     public JwtUtil(String secret, int expirationMinutes) {
         this.secret = secret;
         this.expirationMinutes = expirationMinutes;
