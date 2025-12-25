@@ -4,6 +4,7 @@ import com.example.demo.entity.TemperatureRule;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 public interface TemperatureRuleService {
 
@@ -11,9 +12,9 @@ public interface TemperatureRuleService {
 
     TemperatureRule updateRule(Long id, TemperatureRule rule);
 
-    List<TemperatureRule> getActiveRules();
+    Optional<TemperatureRule> getRuleForProduct(String productType, LocalDate date);
 
-    TemperatureRule getRuleForProduct(String productType, LocalDate date);
+    List<TemperatureRule> getActiveRules();
 
     List<TemperatureRule> getAllRules();
 }
