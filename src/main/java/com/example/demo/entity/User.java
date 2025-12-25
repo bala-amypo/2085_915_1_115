@@ -18,10 +18,10 @@ public class User {
 
     private LocalDateTime createdAt;
 
-    // REQUIRED by JPA & tests
+    // REQUIRED: JPA + tests
     public User() {}
 
-    // REQUIRED by tests
+    // REQUIRED: tests
     public User(Long id, String fullName, String email, String password, String role) {
         this.id = id;
         this.fullName = fullName;
@@ -30,11 +30,12 @@ public class User {
         this.role = role;
     }
 
+    // REQUIRED: tests call this explicitly
     @PrePersist
     public void prePersist() {
-        createdAt = LocalDateTime.now();
-        if (role == null) {
-            role = "USER";
+        this.createdAt = LocalDateTime.now();
+        if (this.role == null) {
+            this.role = "USER";
         }
     }
 

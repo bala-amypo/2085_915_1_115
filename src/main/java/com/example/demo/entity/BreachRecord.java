@@ -18,6 +18,7 @@ public class BreachRecord {
 
     public BreachRecord() {}
 
+    // REQUIRED: tests call this directly
     @PrePersist
     public void prePersist() {
         resolved = false;

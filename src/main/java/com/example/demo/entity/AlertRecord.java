@@ -18,6 +18,7 @@ public class AlertRecord {
 
     public AlertRecord() {}
 
+    // REQUIRED: tests call this explicitly
     @PrePersist
     public void prePersist() {
         acknowledged = false;
