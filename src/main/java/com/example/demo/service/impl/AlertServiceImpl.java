@@ -7,6 +7,7 @@ import com.example.demo.service.AlertService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class AlertServiceImpl implements AlertService {
@@ -23,35 +24,25 @@ public class AlertServiceImpl implements AlertService {
     }
 
     @Override
-    public AlertRecord getAlertById(Long id) {
-        return alertRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Alert not found with ID: " + id));
-    }
-
-    @Override
     public AlertRecord acknowledgeAlert(Long id) {
-        AlertRecord alert = getAlertById(id); 
+        AlertRecord alert = alertRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Alert not found"));
         alert.setAcknowledged(true);
         return alertRepository.save(alert);
     }
 
     @Override
+    public Optional<AlertRecord> getAlertById(Long id) {
+        return alertRepository.findById(id);
+    }
+
+    @Override
     public List<AlertRecord> getAlertsByShipment(Long shipmentId) {
-        List<AlertRecord> alerts = alertRepository.findByShipmentId(shipmentId);
-        if (alerts.isEmpty()) {
-            throw new ResourceNotFoundException(
-                    "No alerts found for shipment ID: " + shipmentId
-            );
-        }
-        return alerts;
+        return alertRepository.findByShipmentId(shipmentId);
     }
 
     @Override
     public List<AlertRecord> getAllAlerts() {
-        List<AlertRecord> alerts = alertRepository.findAll();
-        if (alerts.isEmpty()) {
-            throw new ResourceNotFoundException("No alerts found");
-        }
-        return alerts;
+        return alertRepository.findAll();
     }
 }

@@ -1,34 +1,75 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
+import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
-import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.validation.Valid;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
-@Tag(name = "Authentication")
 public class AuthController {
 
     private final UserService userService;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(UserService userService) {
+    public AuthController(UserService userService,
+                          AuthenticationManager authenticationManager,
+                          JwtUtil jwtUtil) {
         this.userService = userService;
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/register")
-    public User register(@Valid @RequestBody User user) {
-        return userService.registerUser(user);
+    public AuthResponse register(@RequestBody RegisterRequest request) {
+        User user = new User(null,
+                request.getFullName(),
+                request.getEmail(),
+                request.getPassword(),
+                null);
+
+        User savedUser = userService.registerUser(user);
+        String token = jwtUtil.generateToken(
+                savedUser.getId(),
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
+
+        return new AuthResponse(
+                token,
+                savedUser.getId(),
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
     }
 
     @PostMapping("/login")
-    public String login(@Valid @RequestBody User request) {
-        User user = userService.findByEmail(request.getEmail());
+    public AuthResponse login(@RequestBody LoginRequest request) {
+        authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(
+                        request.getEmail(),
+                        request.getPassword()
+                )
+        );
 
-        if (user != null && user.getPassword().equals(request.getPassword())) {
-            return "Login successful";
-        }
-        return "Invalid credentials";
+        User user = userService.findByEmail(request.getEmail());
+        String token = jwtUtil.generateToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
+
+        return new AuthResponse(
+                token,
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
+        );
     }
 }

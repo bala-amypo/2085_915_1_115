@@ -7,6 +7,7 @@ import com.example.demo.service.ShipmentRecordService;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ShipmentRecordServiceImpl implements ShipmentRecordService {
@@ -24,21 +25,20 @@ public class ShipmentRecordServiceImpl implements ShipmentRecordService {
 
     @Override
     public ShipmentRecord updateShipmentStatus(Long id, String status) {
-        ShipmentRecord shipment = getShipmentById(id);
+        ShipmentRecord shipment = shipmentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Shipment not found"));
         shipment.setStatus(status);
         return shipmentRepository.save(shipment);
     }
 
     @Override
-    public ShipmentRecord getShipmentByCode(String code) {
-        return shipmentRepository.findByShipmentCode(code)
-                .orElseThrow(() -> new ResourceNotFoundException("Shipment not found"));
+    public Optional<ShipmentRecord> getShipmentByCode(String shipmentCode) {
+        return shipmentRepository.findByShipmentCode(shipmentCode);
     }
 
     @Override
-    public ShipmentRecord getShipmentById(Long id) {
-        return shipmentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Shipment not found"));
+    public Optional<ShipmentRecord> getShipmentById(Long id) {
+        return shipmentRepository.findById(id);
     }
 
     @Override
