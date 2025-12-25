@@ -24,18 +24,17 @@ public class ShipmentRecord {
         }
     }
 
+    // ===== GETTERS =====
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getShipmentCode() { return shipmentCode; }
-    public void setShipmentCode(String shipmentCode) { this.shipmentCode = shipmentCode; }
-
     public String getOrigin() { return origin; }
-    public void setOrigin(String origin) { this.origin = origin; }
-
     public String getDestination() { return destination; }
-    public void setDestination(String destination) { this.destination = destination; }
-
     public String getStatus() { return status; }
+
+    // ===== SETTERS =====
+    public void setId(Long id) { this.id = id; }
+    public void setShipmentCode(String shipmentCode) { this.shipmentCode = shipmentCode; }
+    public void setOrigin(String origin) { this.origin = origin; }
+    public void setDestination(String destination) { this.destination = destination; }
     public void setStatus(String status) { this.status = status; }
 }

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import java.time.LocalDate;
 
 @Entity
+@Table(name = "temperature_rules")
 public class TemperatureRule {
 
     @Id
@@ -19,27 +20,24 @@ public class TemperatureRule {
 
     public TemperatureRule() {}
 
+    // ===== GETTERS =====
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public String getProductType() { return productType; }
-    public void setProductType(String productType) { this.productType = productType; }
-
     public Double getMinTemp() { return minTemp; }
-    public void setMinTemp(Double minTemp) { this.minTemp = minTemp; }
-
     public Double getMaxTemp() { return maxTemp; }
-    public void setMaxTemp(Double maxTemp) { this.maxTemp = maxTemp; }
-
     public boolean isActive() { return active; }
-    public void setActive(boolean active) { this.active = active; }
-
     public LocalDate getEffectiveFrom() { return effectiveFrom; }
+    public LocalDate getEffectiveTo() { return effectiveTo; }
+
+    // ===== SETTERS =====
+    public void setId(Long id) { this.id = id; }
+    public void setProductType(String productType) { this.productType = productType; }
+    public void setMinTemp(Double minTemp) { this.minTemp = minTemp; }
+    public void setMaxTemp(Double maxTemp) { this.maxTemp = maxTemp; }
+    public void setActive(boolean active) { this.active = active; }
     public void setEffectiveFrom(LocalDate effectiveFrom) {
         this.effectiveFrom = effectiveFrom;
     }
-
-    public LocalDate getEffectiveTo() { return effectiveTo; }
     public void setEffectiveTo(LocalDate effectiveTo) {
         this.effectiveTo = effectiveTo;
     }

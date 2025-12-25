@@ -3,6 +3,7 @@ package com.example.demo.entity;
 import jakarta.persistence.*;
 
 @Entity
+@Table(name = "temperature_sensor_logs")
 public class TemperatureSensorLog {
 
     @Id
@@ -15,17 +16,17 @@ public class TemperatureSensorLog {
 
     public TemperatureSensorLog() {}
 
+    // ===== GETTERS =====
     public Long getId() { return id; }
-    public void setId(Long id) { this.id = id; }
-
     public Long getShipmentId() { return shipmentId; }
-    public void setShipmentId(Long shipmentId) { this.shipmentId = shipmentId; }
-
     public Double getTemperatureValue() { return temperatureValue; }
+    public String getLocation() { return location; }
+
+    // ===== SETTERS =====
+    public void setId(Long id) { this.id = id; }
+    public void setShipmentId(Long shipmentId) { this.shipmentId = shipmentId; }
     public void setTemperatureValue(Double temperatureValue) {
         this.temperatureValue = temperatureValue;
     }
-
-    public String getLocation() { return location; }
     public void setLocation(String location) { this.location = location; }
 }
