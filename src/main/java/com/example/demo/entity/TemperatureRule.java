@@ -33,4 +33,9 @@ public class TemperatureRule {
 
     public Double getMinTemp() { return minTemp; }
     public Double getMaxTemp() { return maxTemp; }
+
+    // ✅ REQUIRED SETTER
+    public void setId(Long id) {
+        this.id = id;
+    }
 }

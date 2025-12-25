@@ -19,7 +19,8 @@ public class AlertRecord {
     public AlertRecord() {
     }
 
-    public AlertRecord(Long shipmentId, Long breachId, boolean acknowledged, LocalDateTime sentAt) {
+    public AlertRecord(Long shipmentId, Long breachId,
+                       boolean acknowledged, LocalDateTime sentAt) {
         this.shipmentId = shipmentId;
         this.breachId = breachId;
         this.acknowledged = acknowledged;
@@ -30,5 +31,10 @@ public class AlertRecord {
     public void prePersist() {
         acknowledged = false;
         sentAt = LocalDateTime.now();
+    }
+
+    // ✅ REQUIRED SETTER
+    public void setAcknowledged(boolean acknowledged) {
+        this.acknowledged = acknowledged;
     }
 }

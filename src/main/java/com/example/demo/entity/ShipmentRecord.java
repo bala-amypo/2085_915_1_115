@@ -43,4 +43,9 @@ public class ShipmentRecord {
     public String getOrigin() { return origin; }
     public String getDestination() { return destination; }
     public String getStatus() { return status; }
+
+    // ✅ REQUIRED SETTER
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }

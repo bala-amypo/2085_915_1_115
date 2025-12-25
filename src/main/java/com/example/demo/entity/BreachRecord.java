@@ -21,7 +21,8 @@ public class BreachRecord {
     public BreachRecord() {
     }
 
-    public BreachRecord(Long shipmentId, Long logId, Double breachValue, String severity, boolean resolved) {
+    public BreachRecord(Long shipmentId, Long logId,
+                        Double breachValue, String severity, boolean resolved) {
         this.shipmentId = shipmentId;
         this.logId = logId;
         this.breachValue = breachValue;
@@ -35,6 +36,7 @@ public class BreachRecord {
         detectedAt = LocalDateTime.now();
     }
 
+    // ✅ ALREADY PRESENT
     public void setResolved(boolean resolved) {
         this.resolved = resolved;
     }
