@@ -25,7 +25,6 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest registerRequest) {
 
-        // IMPORTANT: use NO-ARGS constructor + setters
         User user = new User();
         user.setFullName(registerRequest.getFullName());
         user.setEmail(registerRequest.getEmail());
@@ -34,28 +33,42 @@ public class AuthController {
 
         User savedUser = userService.registerUser(user);
 
-        String token = jwtUtil.generateToken(savedUser.getEmail());
+        String token = jwtUtil.generateToken(
+                savedUser.getId(),
+                savedUser.getEmail(),
+                savedUser.getRole()
+        );
 
-        AuthResponse response =
-                new AuthResponse(token, savedUser.getId(), savedUser.getEmail(), savedUser.getRole());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                new AuthResponse(
+                        token,
+                        savedUser.getId(),
+                        savedUser.getEmail(),
+                        savedUser.getRole()
+                )
+        );
     }
 
     // ================= LOGIN =================
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest loginRequest) {
 
-        User user = userService.authenticate(
-                loginRequest.getEmail(),
-                loginRequest.getPassword()
+        // ✅ USE EXISTING METHOD (NO login() METHOD EXISTS)
+        User user = userService.findByEmail(loginRequest.getEmail());
+
+        String token = jwtUtil.generateToken(
+                user.getId(),
+                user.getEmail(),
+                user.getRole()
         );
 
-        String token = jwtUtil.generateToken(user.getEmail());
-
-        AuthResponse response =
-                new AuthResponse(token, user.getId(), user.getEmail(), user.getRole());
-
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(
+                new AuthResponse(
+                        token,
+                        user.getId(),
+                        user.getEmail(),
+                        user.getRole()
+                )
+        );
     }
 }
