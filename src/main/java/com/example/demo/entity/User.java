@@ -27,16 +27,12 @@ public class User {
         this.password = password;
         this.role = role;
     }
-
-    // ✅ EXACTLY AS REQUIRED BY TESTS
     @PrePersist
     public void prePersist() {
 
         if (this.createdAt == null) {
             this.createdAt = LocalDateTime.now();
         }
-
-        // 🔴 FIX: default role MUST be MONITOR
         if (this.role == null) {
             this.role = "MONITOR";
         }
