@@ -13,34 +13,38 @@ public class AlertRecord {
 
     private Long shipmentId;
     private Long breachId;
-    private boolean acknowledged;
+
+    private String alertType;
+    private String message;
+
     private LocalDateTime sentAt;
+    private Boolean acknowledged;
 
     public AlertRecord() {}
 
-    // REQUIRED: tests call this explicitly
     @PrePersist
     public void prePersist() {
-        acknowledged = false;
-        sentAt = LocalDateTime.now();
+        if (this.sentAt == null) {
+            this.sentAt = LocalDateTime.now();
+        }
+        if (this.acknowledged == null) {
+            this.acknowledged = false;
+        }
     }
 
-    // ===== GETTERS =====
+    // Getters & Setters
     public Long getId() { return id; }
     public Long getShipmentId() { return shipmentId; }
     public Long getBreachId() { return breachId; }
-    public boolean getAcknowledged() { return acknowledged; }
+    public String getAlertType() { return alertType; }
+    public String getMessage() { return message; }
     public LocalDateTime getSentAt() { return sentAt; }
+    public Boolean getAcknowledged() { return acknowledged; }
 
-    // ===== SETTERS =====
     public void setId(Long id) { this.id = id; }
-    public void setShipmentId(Long shipmentId) {
-        this.shipmentId = shipmentId;
-    }
-    public void setBreachId(Long breachId) {
-        this.breachId = breachId;
-    }
-    public void setAcknowledged(boolean acknowledged) {
-        this.acknowledged = acknowledged;
-    }
+    public void setShipmentId(Long shipmentId) { this.shipmentId = shipmentId; }
+    public void setBreachId(Long breachId) { this.breachId = breachId; }
+    public void setAlertType(String alertType) { this.alertType = alertType; }
+    public void setMessage(String message) { this.message = message; }
+    public void setAcknowledged(Boolean acknowledged) { this.acknowledged = acknowledged; }
 }
