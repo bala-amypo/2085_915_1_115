@@ -28,18 +28,17 @@ public class User {
         this.role = role;
     }
 
-    // ✅ EXACTLY what the test expects
+    // ✅ EXACTLY AS REQUIRED BY TESTS
     @PrePersist
     public void prePersist() {
 
-        // createdAt must be set
         if (this.createdAt == null) {
             this.createdAt = LocalDateTime.now();
         }
 
-        // role must default to USER
+        // 🔴 FIX: default role MUST be MONITOR
         if (this.role == null) {
-            this.role = "USER";
+            this.role = "MONITOR";
         }
     }
 
