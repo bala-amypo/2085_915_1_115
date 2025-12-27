@@ -34,7 +34,16 @@ public class BreachRecord {
         }
     }
 
-    // Getters & Setters
+    // ===== REQUIRED BY TESTS =====
+    public boolean getResolved() {
+        return Boolean.TRUE.equals(resolved);
+    }
+
+    public void setResolved(boolean resolved) {
+        this.resolved = resolved;
+    }
+
+    // ===== GETTERS / SETTERS =====
     public Long getId() { return id; }
     public Long getShipmentId() { return shipmentId; }
     public Long getLogId() { return logId; }
@@ -43,7 +52,6 @@ public class BreachRecord {
     public String getSeverity() { return severity; }
     public String getDetails() { return details; }
     public LocalDateTime getDetectedAt() { return detectedAt; }
-    public Boolean getResolved() { return resolved; }
 
     public void setId(Long id) { this.id = id; }
     public void setShipmentId(Long shipmentId) { this.shipmentId = shipmentId; }
@@ -52,5 +60,4 @@ public class BreachRecord {
     public void setBreachValue(Double breachValue) { this.breachValue = breachValue; }
     public void setSeverity(String severity) { this.severity = severity; }
     public void setDetails(String details) { this.details = details; }
-    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }
