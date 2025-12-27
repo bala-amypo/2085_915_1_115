@@ -1,6 +1,7 @@
 package com.example.demo.entity;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "breach_records")
@@ -12,33 +13,44 @@ public class BreachRecord {
 
     private Long shipmentId;
     private Long logId;
+
+    private String breachType;
     private Double breachValue;
     private String severity;
-    private boolean resolved;
+    private String details;
+
+    private LocalDateTime detectedAt;
+    private Boolean resolved;
 
     public BreachRecord() {}
 
-    // REQUIRED: tests call this directly
     @PrePersist
     public void prePersist() {
-        resolved = false;
+        if (this.detectedAt == null) {
+            this.detectedAt = LocalDateTime.now();
+        }
+        if (this.resolved == null) {
+            this.resolved = false;
+        }
     }
 
-    // ===== GETTERS =====
+    // Getters & Setters
     public Long getId() { return id; }
     public Long getShipmentId() { return shipmentId; }
     public Long getLogId() { return logId; }
+    public String getBreachType() { return breachType; }
     public Double getBreachValue() { return breachValue; }
     public String getSeverity() { return severity; }
-    public boolean getResolved() { return resolved; }
+    public String getDetails() { return details; }
+    public LocalDateTime getDetectedAt() { return detectedAt; }
+    public Boolean getResolved() { return resolved; }
 
-    // ===== SETTERS =====
     public void setId(Long id) { this.id = id; }
     public void setShipmentId(Long shipmentId) { this.shipmentId = shipmentId; }
     public void setLogId(Long logId) { this.logId = logId; }
-    public void setBreachValue(Double breachValue) {
-        this.breachValue = breachValue;
-    }
+    public void setBreachType(String breachType) { this.breachType = breachType; }
+    public void setBreachValue(Double breachValue) { this.breachValue = breachValue; }
     public void setSeverity(String severity) { this.severity = severity; }
-    public void setResolved(boolean resolved) { this.resolved = resolved; }
+    public void setDetails(String details) { this.details = details; }
+    public void setResolved(Boolean resolved) { this.resolved = resolved; }
 }

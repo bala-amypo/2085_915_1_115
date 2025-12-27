@@ -14,31 +14,34 @@ public class TemperatureRule {
     private String productType;
     private Double minTemp;
     private Double maxTemp;
-    private boolean active;
+    private Boolean active;
+
     private LocalDate effectiveFrom;
     private LocalDate effectiveTo;
 
     public TemperatureRule() {}
 
-    // ===== GETTERS =====
+    @PrePersist
+    public void prePersist() {
+        if (this.active == null) {
+            this.active = true;
+        }
+    }
+
+    // Getters & Setters
     public Long getId() { return id; }
     public String getProductType() { return productType; }
     public Double getMinTemp() { return minTemp; }
     public Double getMaxTemp() { return maxTemp; }
-    public boolean isActive() { return active; }
+    public Boolean getActive() { return active; }
     public LocalDate getEffectiveFrom() { return effectiveFrom; }
     public LocalDate getEffectiveTo() { return effectiveTo; }
 
-    // ===== SETTERS =====
     public void setId(Long id) { this.id = id; }
     public void setProductType(String productType) { this.productType = productType; }
     public void setMinTemp(Double minTemp) { this.minTemp = minTemp; }
     public void setMaxTemp(Double maxTemp) { this.maxTemp = maxTemp; }
-    public void setActive(boolean active) { this.active = active; }
-    public void setEffectiveFrom(LocalDate effectiveFrom) {
-        this.effectiveFrom = effectiveFrom;
-    }
-    public void setEffectiveTo(LocalDate effectiveTo) {
-        this.effectiveTo = effectiveTo;
-    }
+    public void setActive(Boolean active) { this.active = active; }
+    public void setEffectiveFrom(LocalDate effectiveFrom) { this.effectiveFrom = effectiveFrom; }
+    public void setEffectiveTo(LocalDate effectiveTo) { this.effectiveTo = effectiveTo; }
 }
