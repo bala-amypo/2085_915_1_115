@@ -1,7 +1,7 @@
 package com.example.demo.controller;
 
-import com.example.demo.dto.AuthRequest;
-import com.example.demo.dto.AuthResponse;
+import com.example.demo.dto.LoginRequest;
+import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
 import com.example.demo.security.JwtUtil;
 import com.example.demo.service.UserService;
@@ -17,7 +17,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    // AuthenticationManager kept for compatibility (even if unused)
+    // AuthenticationManager kept for compatibility
     public AuthController(
             UserService userService,
             AuthenticationManager authenticationManager,
@@ -29,12 +29,12 @@ public class AuthController {
 
     // ---------------- REGISTER ----------------
     @PostMapping("/register")
-    public ResponseEntity<String> register(@RequestBody AuthRequest req) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
 
         User user = new User(
                 0L,
-                req.getUsername(),   // using username as fullName if needed
-                req.getUsername(),   // email / username
+                req.getFullName(),
+                req.getEmail(),
                 req.getPassword(),
                 "USER"
         );
@@ -46,9 +46,9 @@ public class AuthController {
 
     // ---------------- LOGIN ----------------
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody AuthRequest req) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
 
-        User user = userService.findByEmail(req.getUsername());
+        User user = userService.findByEmail(req.getEmail());
 
         String token = jwtUtil.generateToken(
                 user.getId(),
@@ -56,6 +56,6 @@ public class AuthController {
                 user.getRole()
         );
 
-        return ResponseEntity.ok(new AuthResponse(token));
+        return ResponseEntity.ok(token);
     }
 }
