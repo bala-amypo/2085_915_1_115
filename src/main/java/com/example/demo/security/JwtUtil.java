@@ -1,58 +1,60 @@
 package com.example.demo.security;
 
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Component;
+
+import java.security.Key;
+import java.util.Date;
 
 @Component
 public class JwtUtil {
 
-    private String secret;
-    private int expirationMinutes;
+    private static final String SECRET = "mysecretkeymysecretkeymysecretkey12345";
+    private static final long EXPIRATION = 1000 * 60 * 60; // 1 hour
 
-    // REQUIRED: Spring + tests
-    public JwtUtil() {
-        this.secret = "default-secret";
-        this.expirationMinutes = 60;
-    }
+    private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    // REQUIRED: tests explicitly call this constructor
-    public JwtUtil(String secret, int expirationMinutes) {
-        this.secret = secret;
-        this.expirationMinutes = expirationMinutes;
-    }
-
-    // REQUIRED: AuthController + tests
+    // -------- TOKEN GENERATION --------
     public String generateToken(Long userId, String email, String role) {
-        // Simple deterministic token format expected by tests
-        return userId + "|" + email + "|" + role;
+        return Jwts.builder()
+                .setSubject(email)
+                .claim("userId", userId)
+                .claim("role", role)
+                .setIssuedAt(new Date())
+                .setExpiration(new Date(System.currentTimeMillis() + EXPIRATION))
+                .signWith(key, SignatureAlgorithm.HS256)
+                .compact();
     }
 
-    // REQUIRED: tests
+    // -------- TOKEN EXTRACTION --------
     public String extractEmail(String token) {
-        if (token == null || !token.contains("|")) {
-            return null;
-        }
-        return token.split("\\|")[1];
+        return getClaims(token).getSubject();
     }
 
-    // REQUIRED: tests
     public String extractRole(String token) {
-        if (token == null || !token.contains("|")) {
-            return null;
-        }
-        return token.split("\\|")[2];
+        return getClaims(token).get("role", String.class);
     }
 
-    // REQUIRED: tests
     public Long extractUserId(String token) {
-        if (token == null || !token.contains("|")) {
-            return null;
-        }
-        return Long.parseLong(token.split("\\|")[0]);
+        return getClaims(token).get("userId", Long.class);
     }
 
-    // REQUIRED: tests
+    // -------- TOKEN VALIDATION --------
     public boolean validateToken(String token) {
-        // Tests only expect a non-null, correctly formatted token
-        return token != null && token.split("\\|").length == 3;
+        try {
+            getClaims(token);
+            return true;
+        } catch (JwtException | IllegalArgumentException e) {
+            return false;
+        }
+    }
+
+    private Claims getClaims(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 }
