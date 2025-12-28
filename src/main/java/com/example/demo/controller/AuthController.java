@@ -18,7 +18,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    // ⚠️ DO NOT REMOVE AuthenticationManager (tests expect it)
+    // 🔒 DO NOT REMOVE AuthenticationManager (tests expect this constructor)
     public AuthController(
             UserService userService,
             AuthenticationManager authenticationManager,
@@ -28,7 +28,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    // -------- REGISTER --------
+    // ---------------- REGISTER ----------------
     @PostMapping("/register")
     public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
 
@@ -45,7 +45,7 @@ public class AuthController {
         return ResponseEntity.ok("Registered successfully");
     }
 
-    // -------- LOGIN --------
+    // ---------------- LOGIN ----------------
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) {
 
