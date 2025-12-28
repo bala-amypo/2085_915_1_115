@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import com.example.demo.dto.AuthResponse;
 import com.example.demo.dto.LoginRequest;
 import com.example.demo.dto.RegisterRequest;
 import com.example.demo.entity.User;
@@ -17,7 +18,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    // AuthenticationManager kept for compatibility
+    // ⚠️ DO NOT REMOVE AuthenticationManager (tests expect it)
     public AuthController(
             UserService userService,
             AuthenticationManager authenticationManager,
@@ -46,7 +47,7 @@ public class AuthController {
 
     // -------- LOGIN --------
     @PostMapping("/login")
-    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) {
 
         User user = userService.findByEmail(req.getEmail());
 
@@ -56,6 +57,13 @@ public class AuthController {
                 user.getRole()
         );
 
-        return ResponseEntity.ok(token);
+        return ResponseEntity.ok(
+                new AuthResponse(
+                        token,
+                        user.getId(),
+                        user.getEmail(),
+                        user.getRole()
+                )
+        );
     }
 }

@@ -10,12 +10,12 @@ import java.util.Date;
 @Component
 public class JwtUtil {
 
-    private static final String SECRET = "mysecretkeymysecretkeymysecretkey12345";
-    private static final long EXPIRATION = 1000 * 60 * 60; // 1 hour
+    private static final String SECRET =
+            "mysecretkeymysecretkeymysecretkey12345";
+    private static final long EXPIRATION = 1000 * 60 * 60;
 
     private final Key key = Keys.hmacShaKeyFor(SECRET.getBytes());
 
-    // -------- TOKEN GENERATION --------
     public String generateToken(Long userId, String email, String role) {
         return Jwts.builder()
                 .setSubject(email)
@@ -27,7 +27,6 @@ public class JwtUtil {
                 .compact();
     }
 
-    // -------- TOKEN EXTRACTION --------
     public String extractEmail(String token) {
         return getClaims(token).getSubject();
     }
@@ -40,12 +39,11 @@ public class JwtUtil {
         return getClaims(token).get("userId", Long.class);
     }
 
-    // -------- TOKEN VALIDATION --------
     public boolean validateToken(String token) {
         try {
             getClaims(token);
             return true;
-        } catch (JwtException | IllegalArgumentException e) {
+        } catch (Exception e) {
             return false;
         }
     }

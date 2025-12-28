@@ -15,7 +15,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain
     ) throws ServletException, IOException {
 
-        // No filtering required for this project
         filterChain.doFilter(request, response);
     }
 }
