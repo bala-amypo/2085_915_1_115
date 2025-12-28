@@ -29,7 +29,7 @@ public class AuthController {
 
     // -------- REGISTER --------
     @PostMapping("/register")
-    public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest req) {
+    public ResponseEntity<String> register(@RequestBody RegisterRequest req) {
 
         User user = new User(
                 0L,
@@ -46,7 +46,7 @@ public class AuthController {
 
     // -------- LOGIN --------
     @PostMapping("/login")
-    public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) {
+    public ResponseEntity<String> login(@RequestBody LoginRequest req) {
 
         User user = userService.findByEmail(req.getEmail());
 
