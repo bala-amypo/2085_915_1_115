@@ -40,7 +40,6 @@ public class User {
         }
     }
 
-    // Getters & Setters
     public Long getId() { return id; }
     public String getFullName() { return fullName; }
     public String getEmail() { return email; }

@@ -26,7 +26,7 @@ public class TemperatureSensorLog {
         }
     }
 
-    // Getters & Setters
+    
     public Long getId() { return id; }
     public Long getShipmentId() { return shipmentId; }
     public String getSensorId() { return sensorId; }

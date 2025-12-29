@@ -37,7 +37,7 @@ public class ShipmentRecord {
         }
     }
 
-    // Getters & Setters
+    
     public Long getId() { return id; }
     public String getShipmentCode() { return shipmentCode; }
     public String getOrigin() { return origin; }

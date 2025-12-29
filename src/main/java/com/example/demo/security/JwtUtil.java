@@ -13,11 +13,11 @@ public class JwtUtil {
     private String secret = "defaultSecretKeyForJwtTesting1234567890";
     private int expirationMs = 3600000; // 1 hour
 
-    // ✅ REQUIRED BY TESTS
+    
     public JwtUtil() {
     }
 
-    // ✅ REQUIRED BY TESTS
+    
     public JwtUtil(String secret, int expirationMs) {
         this.secret = secret;
         this.expirationMs = expirationMs;
@@ -38,7 +38,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    // -------- REQUIRED BY TESTS --------
+    
 
     public String extractEmail(String token) {
         return extractAllClaims(token).getSubject();

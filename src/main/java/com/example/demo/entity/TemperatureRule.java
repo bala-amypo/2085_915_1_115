@@ -28,7 +28,7 @@ public class TemperatureRule {
         }
     }
 
-    // ===== REQUIRED BY TESTS =====
+    
     public boolean isActive() {
         return Boolean.TRUE.equals(active);
     }
@@ -41,7 +41,7 @@ public class TemperatureRule {
         this.active = active;
     }
 
-    // ===== GETTERS / SETTERS =====
+    
     public Long getId() { return id; }
     public String getProductType() { return productType; }
     public Double getMinTemp() { return minTemp; }

@@ -34,7 +34,7 @@ public class BreachRecord {
         }
     }
 
-    // ===== REQUIRED BY TESTS =====
+    
     public boolean getResolved() {
         return Boolean.TRUE.equals(resolved);
     }
@@ -43,7 +43,7 @@ public class BreachRecord {
         this.resolved = resolved;
     }
 
-    // ===== GETTERS / SETTERS =====
+    
     public Long getId() { return id; }
     public Long getShipmentId() { return shipmentId; }
     public Long getLogId() { return logId; }
