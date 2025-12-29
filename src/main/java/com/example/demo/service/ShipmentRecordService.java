@@ -1,11 +1,18 @@
-package com.example.demo.repository;
+package com.example.demo.service;
 
 import com.example.demo.entity.ShipmentRecord;
-import org.springframework.data.jpa.repository.JpaRepository;
-
+import java.util.List;
 import java.util.Optional;
 
-public interface ShipmentRecordRepository extends JpaRepository<ShipmentRecord, Long> {
+public interface ShipmentRecordService {
 
-    Optional<ShipmentRecord> findByShipmentCode(String shipmentCode);
+    ShipmentRecord createShipment(ShipmentRecord shipment);
+
+    ShipmentRecord updateShipmentStatus(Long id, String status);
+
+    Optional<ShipmentRecord> getShipmentByCode(String shipmentCode);
+
+    Optional<ShipmentRecord> getShipmentById(Long id);
+
+    List<ShipmentRecord> getAllShipments();
 }
