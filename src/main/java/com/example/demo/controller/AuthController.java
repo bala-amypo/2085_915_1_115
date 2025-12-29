@@ -18,7 +18,7 @@ public class AuthController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
-    // REQUIRED BY TESTS
+    
     public AuthController(
             UserService userService,
             AuthenticationManager authenticationManager,
@@ -28,7 +28,7 @@ public class AuthController {
         this.jwtUtil = jwtUtil;
     }
 
-    // -------- REGISTER --------
+
     @PostMapping("/register")
     public ResponseEntity<AuthResponse> register(@RequestBody RegisterRequest req) {
 
@@ -53,7 +53,7 @@ public class AuthController {
         );
     }
 
-    // -------- LOGIN --------
+    
     @PostMapping("/login")
     public ResponseEntity<AuthResponse> login(@RequestBody LoginRequest req) {
 

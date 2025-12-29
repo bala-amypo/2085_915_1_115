@@ -32,7 +32,7 @@ public class AlertRecord {
         }
     }
 
-    // ===== REQUIRED BY TESTS =====
+    
     public boolean getAcknowledged() {
         return Boolean.TRUE.equals(acknowledged);
     }
@@ -41,7 +41,7 @@ public class AlertRecord {
         this.acknowledged = acknowledged;
     }
 
-    // ===== GETTERS / SETTERS =====
+    
     public Long getId() { return id; }
     public Long getShipmentId() { return shipmentId; }
     public Long getBreachId() { return breachId; }
